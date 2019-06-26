@@ -1,5 +1,6 @@
 from django.db import models
 from apps.login.models import *
+import requests
 
 # Create your models here
 
@@ -17,11 +18,19 @@ class ParkManager(models.Manager):
         req = requests.get(googlemapsapi, params=params)
         res = req.json()
         place_id = res['results'][0]['place_id']
-        all_place_id = Park.objects.all()
-        print("*" * 100)
-        print(all_place_id)
-        # for place in Park.objects.all().place_id:
-        #     print(place)
+        placesapi = "https://maps.googleapis.com/maps/api/place/details/json"
+        params = {
+            "place_id": place_id,
+            "key": "AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0",
+        }
+        req2 = requests.get(placesapi, params=params)
+        res2 = req2.json()
+        title = res2['result']['name']
+        all_parks = Park.objects.all()
+        for park in all_parks:
+            if title == park.title:
+                errors['duplicate'] = "Park already exists"
+        return errors
 
 
 class Park (models.Model):
