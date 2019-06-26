@@ -20,6 +20,7 @@ class ParkManager(models.Manager):
         all_place_id = Park.objects.all()
         print("*" * 100)
         print(all_place_id)
+        return errors
         # for place in Park.objects.all().place_id:
         #     print(place)
 

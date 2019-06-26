@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import *
+from apps.parks.models import *
 import requests
 from django.contrib import messages
 
@@ -45,19 +45,17 @@ def create(request):
         res2 = req2.json()
         title = res2['result']['name']
         formatted_address = res2['result']['formatted_address']
+        review_text = res2['result']['reviews'][0]['text']
+        website = res2['result']['website']
+        rating = res2['result']['rating']
         try:
-            review_text = res2['result']['reviews'][0]['text']
             phone = res2['result']['formatted_phone_number']
-            website = res2['result']['website']
-            rating = res2['result']['rating']
+        except:
+            phone = "No Phone number available"
+        try:
             hours = res2['result']['opening_hours']['weekday_text']
         except:
-            review_text = "Sorry, no reviews yet"
-            phone = "No Phone number available"
-            website = "No website available"
-            rating = 0
-            hours = "Sorry, no hours available"
-
+            hours = "No hours available"
         # Create the park 
         Park.objects.create(
             title=title,
@@ -72,7 +70,6 @@ def create(request):
             created_by=User.objects.get(id=1)
         )
         return redirect("/")
-
 
 def parkinfo(request, parkid):
 
