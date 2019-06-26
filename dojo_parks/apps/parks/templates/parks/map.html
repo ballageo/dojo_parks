@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <style>
+            #map {
+                height: 600px;
+                border: 2px solid black;
+            }
+            .scroll{
+                height: 800px;
+                overflow-y: scroll; 
+        }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-dark">
+            <h3 class="text-white">Dojo Parks</h3>
+            <a class='ml-auto mr-3' href="#">Home</a>
+            <a href="#">Logout</a>
+        </nav>
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-3 scroll">
+                    <a href=""><h5>Title</h5></a>
+                    <p class='mb-0'><small>Phone Number</small></p>
+                    <p class='mb-0'><small>Address</small></p>
+                    <p class='mb-0'><small>Open Now?</small></p>
+                    <hr>
+                    <a href=""><h5>Title</h5></a>
+                    <p class='mb-0'><small>Phone Number</small></p>
+                    <p class='mb-0'><small>Address</small></p>
+                    <p class='mb-0'><small>Open Now?</small></p>
+                    <hr>
+
+                    <a href=""><h5>Title</h5></a>
+                    <p class='mb-0'><small>Phone Number</small></p>
+                    <p class='mb-0'><small>Address</small></p>
+                    <p class='mb-0'><small>Open Now?</small></p>
+                    <hr>
+
+                    <a href=""><h5>Title</h5></a>
+                    <p class='mb-0'><small>Phone Number</small></p>
+                    <p class='mb-0'><small>Address</small></p>
+                    <p class='mb-0'><small>Open Now?</small></p>
+                    <hr>
+
+                    <a href=""><h5>Title</h5></a>
+                    <p class='mb-0'><small>Phone Number</small></p>
+                    <p class='mb-0'><small>Address</small></p>
+                    <p class='mb-0'><small>Open Now?</small></p>
+                    <hr>
+
+                    <a href=""><h5>Title</h5></a>
+                    <p class='mb-0'><small>Phone Number</small></p>
+                    <p class='mb-0'><small>Address</small></p>
+                    <p class='mb-0'><small>Open Now?</small></p>
+                    <hr>
+
+                    <a href=""><h5>Title</h5></a>
+                    <p class='mb-0'><small>Phone Number</small></p>
+                    <p class='mb-0'><small>Address</small></p>
+                    <p class='mb-0'><small>Open Now?</small></p>
+                    <hr>
+                </div>
+                <div class="col-7">
+                    <div class="row mb-4">
+                        <div class="col-10">
+                            <h5>Add a park to our database!</h5>
+                            <p>Address typed in: </p>
+                            <h5>Yo your longitude is:  and your latitude is </h5>
+                            <form action="create" method = 'post'>
+                                {% csrf_token %}
+                                <input type="text" name = 'location'>
+                                <button class='btn btn-primary btn-sm' type= 'submit'>Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+        // Initialize and add the map
+            function initMap() {
+                var options = {
+                    zoom: 9,
+                    center: {lat: -50, lng: 75}
+                }
+                var map = new google.maps.Map(document.getElementById("map"), options);
+
+                google.maps.event.addListener(map, 'click', function(event){
+                    addMarker({coords: event.latLng});
+                });
+
+                // STORING ALL THE MARKERS IN AN ARRAY
+                var markers = [
+                {
+                    coords: {lat: 47.6101, lng: -122.2015},
+                    iconImage: {url:"static/dojo_park_app/images/icon.png", scaledSize: new google.maps.Size(30,30)},
+                    content: '<p><strong>Bellevue, WA</strong></p><p>Butthole, WA</p>'
+                },
+                {
+                    coords: {lat: -50, lng: 50}
+                }
+                ]
+
+                // LOOPING THROUGH ARRAY TO DISPLAY MARKERS
+                for (var i = 0; i < markers.length; i++){
+                    addMarker(markers[i]);
+                }
+
+                // THE FUNCTION FOR ADDING A MARKER
+                function addMarker(props){
+                    var marker = new google.maps.Marker({
+                        position: props.coords,
+                        map: map,
+                    });
+
+                    if (props.iconImage){
+                        marker.setIcon(props.iconImage);
+                    }
+
+                    if (props.content){
+                        var infoWindow = new google.maps.InfoWindow({
+                            content: props.content
+                        });
+                        marker.addListener('click', function(){
+                            infoWindow.open(map,marker);
+                        });
+                    }
+                }
+                
+            }
+
+
+        </script>
+
+
+        <script async defer 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4HjeXhplfNZb1oPX3HlrQkFz2FuCzoAs&callback=initMap">
+        </script>
+    </body>
+</html>

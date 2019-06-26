@@ -5,4 +5,5 @@ from apps.login.urls import urlpatterns
 
 urlpatterns = [
     url(r'^$', views.index),
+    url(r'^create$', views.create),
 ]

@@ -6,7 +6,7 @@ import bcrypt
 
 def index(request):
     if "user_id" in request.session:
-        return redirect("/parks/")
+        return redirect("parks/")
     else:
         return render(request, "login/index.html")
 
@@ -25,7 +25,7 @@ def register(request):
         hashedpass = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
         User.objects.create(first_name=first_name, last_name=last_name, email=email, password=hashedpass)
         request.session["user_id"] = User.objects.last().id
-        return redirect("/belt/")
+        return redirect("parks/")
 
 
 def validate_login(request):
@@ -33,7 +33,7 @@ def validate_login(request):
     if len(errors) == 0:
         user = User.objects.get(email=request.POST['email'])
         request.session["user_id"] = user.id
-        return redirect("/belt/")
+        return redirect("/parks/")
     else:
         for key, value in errors.items():
             messages.error(request, value, extra_tags=key)
