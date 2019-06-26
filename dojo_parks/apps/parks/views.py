@@ -5,7 +5,10 @@ import requests
 # Create your views here.
 
 def index(request):
-    return render(request, 'parks/map.html')
+    context = {
+        "all_parks": Park.objects.all(),
+    }
+    return render(request, 'parks/map.html', context)
 
 def create(request):
     # Google Maps API
@@ -23,6 +26,9 @@ def create(request):
     longitude = res['results'][0]['geometry']['location']['lng']
     place_id = res['results'][0]['place_id']
     address = request.POST['location']
+    
+
+    # Google Places API
 
     placesapi = "https://maps.googleapis.com/maps/api/place/details/json"
     params = {
@@ -33,13 +39,49 @@ def create(request):
     res2 = req2.json()
     title = res2['result']['name']
     rating = res2['result']['rating']
+    website = res2['result']['website']
+    phone = res2['result']['formatted_phone_number']
+    formatted_address = res2['result']['formatted_address']
+    review_text = res2['result']['reviews'][0]['text'],
+
+    try:
+        hours = res2['result']['opening_hours']['weekday_text']
+    except:
+        hours = "Sorry, no hours available"
+        
     print("*" * 100)
     print(res2)
     print("*" * 100)
     print(title)
     print("*" * 100)
     print(rating)
+    print("*" * 100)
+    print(website)
+    print("*" * 100)
+    print(phone)
+    print("*" * 100)
+    print(formatted_address)
+    print("*" * 100)
+    print(review_text[0])
 
 
-
+    Park.objects.create(
+        title=title,
+        address = formatted_address,
+        review = review_text,
+        rating = rating,
+        longitude = longitude,
+        latitude = latitude,
+        operating_hours = hours,
+        website = website,
+        phone_number = phone,
+        created_by = User.objects.get(id=1)
+        )
     return redirect("/")
+
+
+def parkinfo(request, parkid):
+    context = {
+        "all_parks": Park.objects.all(),
+    }
+    return render (request, "parks/parkinfo.html", context)

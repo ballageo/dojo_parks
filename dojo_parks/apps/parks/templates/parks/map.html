@@ -13,6 +13,7 @@
             .scroll{
                 height: 800px;
                 overflow-y: scroll; 
+                word-wrap: break-word; 
         }
         </style>
     </head>
@@ -25,46 +26,14 @@
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-3 scroll">
-                    <a href=""><h5>Title</h5></a>
-                    <p class='mb-0'><small>Phone Number</small></p>
-                    <p class='mb-0'><small>Address</small></p>
-                    <p class='mb-0'><small>Open Now?</small></p>
-                    <hr>
-                    <a href=""><h5>Title</h5></a>
-                    <p class='mb-0'><small>Phone Number</small></p>
-                    <p class='mb-0'><small>Address</small></p>
-                    <p class='mb-0'><small>Open Now?</small></p>
-                    <hr>
-
-                    <a href=""><h5>Title</h5></a>
-                    <p class='mb-0'><small>Phone Number</small></p>
-                    <p class='mb-0'><small>Address</small></p>
-                    <p class='mb-0'><small>Open Now?</small></p>
-                    <hr>
-
-                    <a href=""><h5>Title</h5></a>
-                    <p class='mb-0'><small>Phone Number</small></p>
-                    <p class='mb-0'><small>Address</small></p>
-                    <p class='mb-0'><small>Open Now?</small></p>
-                    <hr>
-
-                    <a href=""><h5>Title</h5></a>
-                    <p class='mb-0'><small>Phone Number</small></p>
-                    <p class='mb-0'><small>Address</small></p>
-                    <p class='mb-0'><small>Open Now?</small></p>
-                    <hr>
-
-                    <a href=""><h5>Title</h5></a>
-                    <p class='mb-0'><small>Phone Number</small></p>
-                    <p class='mb-0'><small>Address</small></p>
-                    <p class='mb-0'><small>Open Now?</small></p>
-                    <hr>
-
-                    <a href=""><h5>Title</h5></a>
-                    <p class='mb-0'><small>Phone Number</small></p>
-                    <p class='mb-0'><small>Address</small></p>
-                    <p class='mb-0'><small>Open Now?</small></p>
-                    <hr>
+                    {% for park in all_parks %}
+                        <a href="infopage/{{park.id}}"><h5>{{park.title}}</h5></a>
+                        <p class='mb-0'><small>{{ park.phone_number }}</small></p>
+                        <p class='mb-0'><small>{{ park.rating }}</small></p>
+                        <p class='mb-0'><small>{{ park.review }}</small></p>
+                        <p class='mb-0'>Website: <small><a href="{{park.website}}"> {{ park.website }}</a></small></p>
+                        <hr>
+                    {% endfor %}
                 </div>
                 <div class="col-7">
                     <div class="row mb-4">
@@ -92,7 +61,7 @@
             function initMap() {
                 var options = {
                     zoom: 9,
-                    center: {lat: -50, lng: 75}
+                    center: {lat: 47.61, lng: -122.2015}
                 }
                 var map = new google.maps.Map(document.getElementById("map"), options);
 
@@ -104,7 +73,7 @@
                 var markers = [
                 {
                     coords: {lat: 47.6101, lng: -122.2015},
-                    iconImage: {url:"static/dojo_park_app/images/icon.png", scaledSize: new google.maps.Size(30,30)},
+                    iconImage: {url:"/static/parks/img/icon.png", scaledSize: new google.maps.Size(30,30)},
                     content: '<p><strong>Bellevue, WA</strong></p><p>Butthole, WA</p>'
                 },
                 {
