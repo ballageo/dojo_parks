@@ -4,11 +4,13 @@ import requests
 
 # Create your views here.
 
+
 def index(request):
     context = {
         "all_parks": Park.objects.all(),
     }
     return render(request, 'parks/map.html', context)
+
 
 def create(request):
     # Google Maps API
@@ -26,7 +28,6 @@ def create(request):
     longitude = res['results'][0]['geometry']['location']['lng']
     place_id = res['results'][0]['place_id']
     address = request.POST['location']
-    
 
     # Google Places API
 
@@ -48,7 +49,7 @@ def create(request):
         hours = res2['result']['opening_hours']['weekday_text']
     except:
         hours = "Sorry, no hours available"
-        
+
     print("*" * 100)
     print(res2)
     print("*" * 100)
@@ -64,24 +65,44 @@ def create(request):
     print("*" * 100)
     print(review_text[0])
 
-
     Park.objects.create(
         title=title,
-        address = formatted_address,
-        review = review_text,
-        rating = rating,
-        longitude = longitude,
-        latitude = latitude,
-        operating_hours = hours,
-        website = website,
-        phone_number = phone,
-        created_by = User.objects.get(id=1)
-        )
+        address=formatted_address,
+        review=review_text,
+        rating=rating,
+        longitude=longitude,
+        latitude=latitude,
+        operating_hours=hours,
+        website=website,
+        phone_number=phone,
+        created_by=User.objects.get(id=1)
+    )
     return redirect("/")
 
 
 def parkinfo(request, parkid):
+
+    park = Park.objects.get(id=parkid)
+    print(park.operating_hours) # an array of 7 strings
+
+    # The code below should loop through the array and print each string, but it's treating the whole park.operating_hours as 1 string, index 0 is the [....WTF???
+
+    # for text in  enumerate(park.operating_hours):
+    #     print(text)
+
+    for text in park.operating_hours:
+        print(text)
+    # for  i in range(len(park.operating_hours)) :
+    #     print(park.operating_hours[i]) 
+    #     i += 1
+
+    # [print(i) for i in park.operating_hours]
+
+    print(park.operating_hours)
+
+    
+
     context = {
-        "all_parks": Park.objects.all(),
+        "selected_park": park,
     }
-    return render (request, "parks/parkinfo.html", context)
+    return render(request, "parks/parkinfo.html", context)
