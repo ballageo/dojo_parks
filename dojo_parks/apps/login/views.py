@@ -38,3 +38,5 @@ def validate_login(request):
         for key, value in errors.items():
             messages.error(request, value, extra_tags=key)
         return redirect("/")
+
+

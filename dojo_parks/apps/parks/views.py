@@ -46,8 +46,10 @@ def create(request):
     review_text = res2['result']['reviews'][0]['text'],
 
     try:
+        rating = res2['result']['rating']
         hours = res2['result']['opening_hours']['weekday_text']
     except:
+        rating = 0
         hours = "Sorry, no hours available"
 
     print("*" * 100)
