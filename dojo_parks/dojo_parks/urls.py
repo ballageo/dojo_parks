@@ -18,5 +18,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^', include('apps.login.urls')),
-    url(r'^parks', include('apps.parks.urls')),
+    url(r'^parks/', include('apps.parks.urls')),
 ]

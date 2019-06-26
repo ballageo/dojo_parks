@@ -1,10 +1,11 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, redirect
+from .models import *
+import requests
 
 # Create your views here.
+
+
 def index(request):
-<<<<<<< Updated upstream
-    return render(request, "parks/index.html")
-=======
     context = {
         "all_parks": Park.objects.all(),
     }
@@ -38,6 +39,7 @@ def create(request):
     req2 = requests.get(placesapi, params=params)
     res2 = req2.json()
     title = res2['result']['name']
+    rating = res2['result']['rating']
     website = res2['result']['website']
     phone = res2['result']['formatted_phone_number']
     formatted_address = res2['result']['formatted_address']
@@ -106,4 +108,3 @@ def parkinfo(request, parkid):
         "selected_park": park,
     }
     return render(request, "parks/parkinfo.html", context)
->>>>>>> Stashed changes
