@@ -3,6 +3,7 @@ from django.core.validators import re
 from datetime import date
 from django.utils.dateparse import parse_date, parse_time
 import bcrypt
+import requests
 
 
 class UserManager(models.Manager):
@@ -44,7 +45,7 @@ class UserManager(models.Manager):
         elif not bcrypt.checkpw(password.encode(), users[0].password.encode()):
             errors["wrongpassword"] = "Password doesn't match"
         return errors
-        
+
 
 
 class User(models.Model):
