@@ -10,6 +10,7 @@ def index(request):
     context = {
         "user" : User.objects.get(id=request.session["user_id"]),
         "all_parks": Park.objects.all(),
+        "sidebar_parks": Park.objects.all().order_by("-id")[:10],
         "last_park": Park.objects.last(),
     }
     return render(request, 'parks/map.html', context)
