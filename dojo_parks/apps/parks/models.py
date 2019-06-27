@@ -1,5 +1,6 @@
 from django.db import models
 from apps.login.models import *
+import requests
 
 # Create your models here
 class OperatingHours(models.Model):
@@ -12,6 +13,34 @@ class OperatingHours(models.Model):
     sunday = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class ParkManager(models.Manager):
+    def address_validator(self, postData):
+        errors = {}
+        googlemapsapi = "https://maps.googleapis.com/maps/api/geocode/json"
+        params = {
+            'address': postData['location'],
+            'sensor': 'false',
+            'region': 'us',
+            'key': 'AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0'
+        }
+        req = requests.get(googlemapsapi, params=params)
+        res = req.json()
+        place_id = res['results'][0]['place_id']
+        placesapi = "https://maps.googleapis.com/maps/api/place/details/json"
+        params = {
+            "place_id": place_id,
+            "key": "AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0",
+        }
+        req2 = requests.get(placesapi, params=params)
+        res2 = req2.json()
+        title = res2['result']['name']
+        all_parks = Park.objects.all()
+        for park in all_parks:
+            if title == park.title:
+                errors['duplicate'] = "Park already exists"
+        return errors
 
 
 class Park (models.Model):
@@ -28,5 +57,9 @@ class Park (models.Model):
     created_by = models.ForeignKey(User, related_name="parks_created")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+<<<<<<< HEAD
 
+=======
+    objects = ParkManager()
+>>>>>>> c95ca023da1a893a239e1d69c57c7fd6da9e6abe
 

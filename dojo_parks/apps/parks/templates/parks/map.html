@@ -39,11 +39,14 @@
                     <div class="row mb-4">
                         <div class="col-10">
                             <h5>Add a park to our database!</h5>
-                            <p>Address typed in: </p>
-                            <h5>Yo your longitude is:  and your latitude is </h5>
                             <form action="create" method = 'post'>
                                 {% csrf_token %}
                                 <input type="text" name = 'location'>
+                                {% for message in messages %}
+                                {% if message.extra_tags == "duplicate" %}
+                                <p class = "text-danger"><small>{{ message }}</small></p>
+                                {% endif %}
+                                {% endfor %}
                                 <button class='btn btn-primary btn-sm' type= 'submit'>Submit</button>
                             </form>
                         </div>
@@ -77,7 +80,7 @@
                     content: '<p><strong>Bellevue, WA</strong></p><p>Butthole, WA</p>'
                 },
                 {
-                    coords: {lat: -50, lng: 50}
+                    coords: {lat: 47, lng: -122}
                 }
                 ]
 
