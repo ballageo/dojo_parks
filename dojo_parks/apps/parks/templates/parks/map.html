@@ -67,7 +67,7 @@
         // Initialize and add the map
             function initMap() {
                 var options = {
-                    zoom: 9,
+                    zoom: 12,
                     center: {lat: 47.61, lng: -122.2015}
                 }
                 var map = new google.maps.Map(document.getElementById("map"), options);
@@ -81,7 +81,7 @@
                 {
                     coords: {lat: 47.6101, lng: -122.2015},
                     iconImage: {url:"/static/parks/img/icon.png", scaledSize: new google.maps.Size(30,30)},
-                    content: '<p><strong>Bellevue, WA</strong></p><p>Butthole, WA</p>'
+                    content: '<p><strong>{{park.title}}</strong></p><p>Butthole, WA</p>'
                 },
                 {
                     coords: {lat: 47, lng: -122}
