@@ -17,7 +17,7 @@ def create(request):
     errors = Park.objects.address_validator(request.POST)
     if len(errors) > 0:
         for key, value in errors.items():
-            messages.error(request, value, extra_tags = key)
+            messages.error(request, value, extra_tags=key)
         return redirect("/")
     else:
         # Google Maps API
@@ -48,6 +48,19 @@ def create(request):
         review_text = res2['result']['reviews'][0]['text']
         website = res2['result']['website']
         rating = res2['result']['rating']
+
+        # Get the photo
+        photo_id = res2['result']['photos'][0]['photo_reference']
+        params2 = {
+            "place_id": place_id,
+            "key": "AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0",
+            "photo_reference": photo_id,
+            "maxwidth": 400
+        }
+        raw_image_data = requests.get(placesapi, params=params2)
+        print(raw_image_data)
+        print(photo_id)
+
         try:
             x = res2['result']['opening_hours']
         except:
@@ -60,7 +73,8 @@ def create(request):
             friday = res2['result']['opening_hours']['weekday_text'][4]
             saturday = res2['result']['opening_hours']['weekday_text'][5]
             sunday = res2['result']['opening_hours']['weekday_text'][6]
-            hours = [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
+            hours = [monday, tuesday, wednesday,
+                thursday, friday, saturday, sunday]
         try:
             phone = res2['result']['formatted_phone_number']
         except:
@@ -69,7 +83,7 @@ def create(request):
         #     hours = res2['result']['opening_hours']['weekday_text']
         # except:
         #     hours = "No hours available"
-        # Create the park 
+        # Create the park
         Park.objects.create(
             title=title,
             address=formatted_address,
@@ -83,6 +97,7 @@ def create(request):
             created_by=User.objects.get(id=1)
         )
         return redirect("/")
+
 
 def parkinfo(request, parkid):
 
@@ -106,19 +121,46 @@ def parkinfo(request, parkid):
     #         quotation = split_list[i].replace("'","")
     #     print(quotation)
 
-
-    split_list = split_list[1:-1] # cutting off Monday and Sunday
-
+    split_list = split_list[1:-1]  # cutting off Monday and Sunday
 
     # trying to remove beginning and ending quotation
     # for hour in split_list:
     #     split_list[hour].replace("'","")
     # print(split_list)
 
+
+
+
+    # Trying to get the photos from the places api
+    googlemapsapi = "https://maps.googleapis.com/maps/api/geocode/json"
+    params = {
+            'address': park.address,
+            'sensor': 'false',
+            'region': 'us',
+            'key': 'AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0'
+        }
+    req = requests.get(googlemapsapi, params=params)
+    res = req.json()
+    place_id = res['results'][0]['place_id']
+
+
+    placesapi = "https://maps.googleapis.com/maps/api/place/details/json"
+    params = {
+            "place_id": place_id,
+            "key": "AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0",
+        }
+    req2 = requests.get(placesapi, params=params)
+    res2 = req2.json()
+
+    # only get the 1st image, throwing a keyerror on 'photos'...works if this photo_id is hardcoded to any photo_reference
+    photo_id = res2['result']['photos'][0]['photo_reference'] 
+    
     context = {
         "selected_park": park,
         "split_hours" : split_list,
         "formatted_hours" : left_bracket,
         "formatted_hours2" : right_bracket,
+        "photo_reference" : photo_id,
+        # "key" :  "AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0" # don't have to pass in, can hardcode in html
     }
     return render(request, "parks/parkinfo.html", context)
