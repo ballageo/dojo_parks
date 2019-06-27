@@ -69,6 +69,7 @@
                 }
                 var map = new google.maps.Map(document.getElementById("map"), options);
 
+            
                 // STORING ALL THE MARKERS IN AN ARRAY
                 // var markers = [
                 // {
@@ -83,24 +84,43 @@
                 //     addMarker(markers[i]);
                 // }
 
+                // marker = []
+                // {% for park in all_parks %}
+                // coords = {lat: {{park.latitude}}, lng: {{park.longitude}}}
+                // content = '<p><strong>{{park.title}}</strong></p><p>{{park.address}}</p>'
+                // marker.push(coords)
+                // marker.push(content)
+                // {% endfor %}
                 marker = []
                 {% for park in all_parks %}
-                coords = {lat: {{park.latitude}}, lng: {{park.longitude}}}
-                marker.push(coords)
+                props = {
+                    'coords': {lat: {{park.latitude}}, lng: {{park.longitude}}}
+                }
+                marker.push(props)
                 {% endfor %}
 
                 for (var i = 0; i < marker.length; i++){
                     addMarker(marker[i]);
                 }
 
+                
+                var infowindow = new google.maps.InfoWindow({
+                    content: props.content
+                })
+                // content.push(infowindow)
+
 
                 // THE FUNCTION FOR ADDING A MARKER
-                function addMarker(coords){
+                function addMarker(props){
                     var marker = new google.maps.Marker({
-                        position: coords,
+                        position: props.coords,
                         map: map,
                         icon: {url: "/static/parks/img/icon.png", scaledSize: new google.maps.Size(30,30)},
+                        content: props.content
                     });
+                    marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
                 }
             }
 
