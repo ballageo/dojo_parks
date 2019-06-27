@@ -2,18 +2,6 @@ from django.db import models
 from apps.login.models import *
 import requests
 
-# Create your models here
-class OperatingHour(models.Model):
-    monday = models.TextField()
-    tuesday = models.TextField()
-    wednesday = models.TextField()
-    thursday = models.TextField()
-    friday = models.TextField()
-    saturday = models.TextField()
-    sunday = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
 
 class ParkManager(models.Manager):
     def address_validator(self, postData):

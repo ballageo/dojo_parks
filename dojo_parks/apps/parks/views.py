@@ -8,7 +8,9 @@ from django.contrib import messages
 
 def index(request):
     context = {
+        "user" : User.objects.get(id=request.session["user_id"]),
         "all_parks": Park.objects.all(),
+        "sidebar_parks": Park.objects.all().order_by("-id")[:10],
         "last_park": Park.objects.last(),
     }
     return render(request, 'parks/map.html', context)
@@ -77,7 +79,7 @@ def create(request):
             operating_hours=hours,
             website=website,
             phone_number=phone,
-            created_by=User.objects.get(id=1)
+            created_by=User.objects.get(id=request.session["user_id"])
         )
         return redirect("/")
 
@@ -111,3 +113,8 @@ def parkinfo(request, parkid):
         'photo': photo,
     }
     return render(request, "parks/parkinfo.html", context)
+
+
+def removePark(request, parkid):
+    Park.objects.get(id = parkid).delete()
+    return redirect('/')

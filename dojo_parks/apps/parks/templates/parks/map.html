@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <style>
             #map {
-                height: 600px;
+                height:600px;
                 border: 2px solid black;
             }
             .scroll{
@@ -25,33 +25,37 @@
             <a href="/logout">Logout</a>
         </nav>
         <div class="container-fluid">
-            <div class="row align-items-center">
+            <div class="row">
                 <div class="col-3 scroll">
-                    {% for park in all_parks %}
-                        <a href="infopage/{{park.id}}"><h5>{{park.title}}</h5></a>
-                        {% if park.created_by.id == 1 %}
-                        <a class="text-danger" href="delete"><small>Remove Park</small></a>
-                        {% endif %}
-                        <p class='mb-0'><small>{{ park.phone_number }}</small></p>
-                        <p class='mb-0'><small>{{ park.rating }}</small></p>
-                        <p class='mb-0'><small>{{ park.review | truncatechars:100 }} <a href="infopage/{{park.id}}">Read Full Review</a></small></p>
-                        <p class='mb-0'>Website: <small><a href="{{park.website}}" target="_blank"> {{ park.website }}</a></small></p>
-                        <hr>
+                    {% for park in sidebar_parks %}
+                    <a href="infopage/{{park.id}}"><header>{{park.title}}</header></a>
+                    {% if park.created_by.id == user.id %}
+                    {% endif %}
+                    <span class='small font-weight-bold'>Phone: </span><span class="small">{{ park.phone_number }}</span><br>
+                    <span class='small font-weight-bold'>Rating: </span><span class="small">{{ park.rating }}</span><br>
+                    <span class='small font-weight-bold'>Review: </span><span class="small">{{ park.review | truncatechars:75 }} <a href="infopage/{{park.id}}" class="small">Read Full Review</a></span><br>
+                    <span class='small font-weight-bold'>Webite: </span><span class="small"><a href="{{park.website}}" target="_blank"> {{ park.website }}</a></span><br>
+                    <a class="text-danger" href="remove/{{park.id}}"><span class="small">Remove Park</span></a>
+                    <hr>
                     {% endfor %}
                 </div>
                 <div class="col-7">
-                    <div class="row mb-4">
-                        <div class="col-10">
-                            <h5>Add a park to our database!</h5>
+                    <div class="row mb-4 mt-3 align-items-center">
+                        <div class="col-6">
+                            <h5 class="mb-3">Add a park to our database!</h5>
                             <form action="create" method = 'post'>
                                 {% csrf_token %}
-                                <input type="text" name = 'location'>
+                                <div class="input-group">
+                                    <input type="text" name = 'location'>
+                                    <div class="input-group-append">
+                                        <button class='btn btn-primary btn-sm' type= 'submit'>Submit</button>
+                                    </div>
+                                </div>
                                 {% for message in messages %}
                                 {% if message.extra_tags == "duplicate" %}
                                 <p class = "text-danger"><small>{{ message }}</small></p>
                                 {% endif %}
                                 {% endfor %}
-                                <button class='btn btn-primary btn-sm' type= 'submit'>Submit</button>
                             </form>
                         </div>
                     </div>
