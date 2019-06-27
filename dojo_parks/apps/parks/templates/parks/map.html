@@ -98,7 +98,8 @@
                 marker = []
                 {% for park in all_parks %}
                 props = {
-                    'coords': {lat: {{park.latitude}}, lng: {{park.longitude}}}
+                    'coords': {lat: {{park.latitude}}, lng: {{park.longitude}}},
+                    'content': '<p><strong>{{park.title}}</strong></p><p>{{park.address}}</p>'
                 }
                 marker.push(props)
                 {% endfor %}
@@ -108,11 +109,11 @@
                 }
 
                 
-                var infowindow = new google.maps.InfoWindow({
-                    content: props.content
-                })
-                // content.push(infowindow)
-
+                // var infowindow = new google.maps.InfoWindow({
+                //     content: props.content
+                // })
+                // // content.push(infowindow)
+                
 
                 // THE FUNCTION FOR ADDING A MARKER
                 function addMarker(props){
@@ -120,11 +121,17 @@
                         position: props.coords,
                         map: map,
                         icon: {url: "/static/parks/img/icon.png", scaledSize: new google.maps.Size(30,30)},
-                        content: props.content
+                        // content: props.content
                     });
+
+                    if(props.content){
+                        var infowindow = new google.maps.InfoWindow({
+                            content: props.content
+                        });
                     marker.addListener('click', function() {
                     infowindow.open(map, marker);
-                });
+                    });
+                    }
                 }
             }
 
