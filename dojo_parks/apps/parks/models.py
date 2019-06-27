@@ -3,7 +3,7 @@ from apps.login.models import *
 import requests
 
 # Create your models here
-class OperatingHours(models.Model):
+class OperatingHour(models.Model):
     monday = models.TextField()
     tuesday = models.TextField()
     wednesday = models.TextField()

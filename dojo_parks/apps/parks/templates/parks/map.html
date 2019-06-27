@@ -61,10 +61,11 @@
         </div>
         <script>
         // Initialize and add the map
+            
             function initMap() {
                 var options = {
-                    zoom: 9,
-                    center: {lat: 47.61, lng: -122.2015}
+                    zoom: 12,
+                    center: {lat: {{last_park.latitude}}, lng: {{last_park.longitude}}}
                 }
                 var map = new google.maps.Map(document.getElementById("map"), options);
 
@@ -73,26 +74,33 @@
                 });
 
                 // STORING ALL THE MARKERS IN AN ARRAY
-                var markers = [
-                {
-                    coords: {lat: 47.6101, lng: -122.2015},
-                    iconImage: {url:"/static/parks/img/icon.png", scaledSize: new google.maps.Size(30,30)},
-                    content: '<p><strong>Bellevue, WA</strong></p><p>Butthole, WA</p>'
-                },
-                {
-                    coords: {lat: 47, lng: -122}
-                }
-                ]
+                // {% for park in all_parks.latitude %}
+                // {% for park in all_parks.longitude %}
+                // var markers = [
+                // {
+                //     coords: {lat: {{park.latitude}}, lng: {{park.longitude}}},
+                //     // iconImage: {url:"/static/parks/img/icon.png", scaledSize: new google.maps.Size(30,30)},
+                //     // content: '<p><strong>Bellevue, WA</strong></p><p>Butthole, WA</p>'
+                // }
+                // ]
+                // {% endfor %}
+                // {% endfor %}
 
                 // LOOPING THROUGH ARRAY TO DISPLAY MARKERS
-                for (var i = 0; i < markers.length; i++){
-                    addMarker(markers[i]);
-                }
+                // for (var i = 0; i < markers.length; i++){
+                //     addMarker(markers[i]);
+                // }
+                {% for park in all_parks %}
+                x = {{park.latitude}}
+                y = {{park.longitude}}
+                coords = {lat: x, lng: y}
+                addMarker(coords)
+                {% endfor %}
 
                 // THE FUNCTION FOR ADDING A MARKER
-                function addMarker(props){
+                function addMarker(coords){
                     var marker = new google.maps.Marker({
-                        position: props.coords,
+                        position: coords,
                         map: map,
                     });
 
