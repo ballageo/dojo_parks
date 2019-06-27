@@ -1,8 +1,6 @@
 from django.db import models
 from apps.login.models import *
 
-# Create your models here
-
 
 class Park (models.Model):
     title = models.CharField(max_length=255)

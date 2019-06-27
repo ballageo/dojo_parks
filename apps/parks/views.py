@@ -29,8 +29,8 @@ def create(request):
     place_id = res['results'][0]['place_id']
     address = request.POST['location']
 
-    # Google Places API
 
+    # Google Places API
     placesapi = "https://maps.googleapis.com/maps/api/place/details/json"
     params = {
         "place_id": place_id,
@@ -43,29 +43,16 @@ def create(request):
     website = res2['result']['website']
     phone = res2['result']['formatted_phone_number']
     formatted_address = res2['result']['formatted_address']
-    review_text = res2['result']['reviews'][0]['text'],
-
+    review_text = res2['result']['reviews'][0]['text']
     try:
         rating = res2['result']['rating']
-        hours = res2['result']['opening_hours']['weekday_text']
     except:
         rating = 0
+    try:
+        hours = res2['result']['opening_hours']['weekday_text']
+    except:
         hours = "Sorry, no hours available"
 
-    print("*" * 100)
-    print(res2)
-    print("*" * 100)
-    print(title)
-    print("*" * 100)
-    print(rating)
-    print("*" * 100)
-    print(website)
-    print("*" * 100)
-    print(phone)
-    print("*" * 100)
-    print(formatted_address)
-    print("*" * 100)
-    print(review_text[0])
 
     Park.objects.create(
         title=title,
