@@ -9,6 +9,7 @@ from django.contrib import messages
 def index(request):
     context = {
         "all_parks": Park.objects.all(),
+        "last_park": Park.objects.last(),
     }
     return render(request, 'parks/map.html', context)
 
@@ -45,9 +46,18 @@ def create(request):
         res2 = req2.json()
         title = res2['result']['name']
         formatted_address = res2['result']['formatted_address']
-        review_text = res2['result']['reviews'][0]['text']
-        website = res2['result']['website']
-        rating = res2['result']['rating']
+        try:
+            review_text = res2['result']['reviews'][0]['text']
+        except:
+            review_text = "No reviews yet"
+        try:
+            website = res2['result']['website']
+        except:
+            website = "Sorry, no website available"
+        try:
+            rating = res2['result']['rating']
+        except:
+            rating = 0
         try:
             phone = res2['result']['formatted_phone_number']
         except:
@@ -72,25 +82,7 @@ def create(request):
         return redirect("/")
 
 def parkinfo(request, parkid):
-
     park = Park.objects.get(id=parkid)
-    print(park.operating_hours)  # an array of 7 strings
-
-    # The code below should loop through the array and print each string, but it's treating the whole park.operating_hours as 1 string, index 0 is the [....WTF???
-
-    # for text in  enumerate(park.operating_hours):
-    #     print(text)
-
-    # for text in park.operating_hours:
-    #     print(text)
-    # for  i in range(len(park.operating_hours)) :
-    #     print(park.operating_hours[i])
-    #     i += 1
-
-    # [print(i) for i in park.operating_hours]
-
-    # print(park.operating_hours)
-
     context = {
         "selected_park": park,
     }
