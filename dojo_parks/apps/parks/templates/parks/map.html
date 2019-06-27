@@ -30,13 +30,13 @@
                 <div class="col-3 scroll">
                     {% for park in sidebar_parks %}
                     <a href="infopage/{{park.id}}"><header>{{park.title}}</header></a>
-                    {% if park.created_by.id == user.id %}
-                    {% endif %}
                     <span class='small font-weight-bold'>Phone: </span><span class="small">{{ park.phone_number }}</span><br>
                     <span class='small font-weight-bold'>Rating: </span><span class="small">{{ park.rating }}</span><br>
-                    <span class='small font-weight-bold'>Review: </span><span class="small">{{ park.review | truncatechars:75 }} <a href="infopage/{{park.id}}" class="small">Read Full Review</a></span><br>
+                    <span class='small font-weight-bold'>Review: </span><span class="small">{{ park.review | truncatechars:85 }} <a href="infopage/{{park.id}}" class="small">Read Full Review</a></span><br>
                     <span class='small font-weight-bold'>Webite: </span><span class="small"><a href="{{park.website}}" target="_blank"> {{ park.website }}</a></span><br>
+                    {% if park.created_by.id == user.id %}
                     <a class="text-danger" href="remove/{{park.id}}"><span class="small">Remove Park</span></a>
+                    {% endif %}
                     <hr>
                     {% endfor %}
                 </div>
@@ -105,7 +105,7 @@
                 
                 iwcontentstr = '<div id="content">'+'<div id="siteNotice">'+'</div>'+
                                 '<h5 id="firstHeading" class="firstHeading">{{park.title}}</h1>'+'<div id="bodyContent">'+
-                                '<p><b>Address:</b>, {{park.address}}</p>' +
+                                '<p><b>Address:</b> {{park.formatted_address}}</p>' +
                                 '<a href="#" id="Anchor">Fireworks?</a> '+
                                 '</div>'+
                                 '</div>';
@@ -123,17 +123,23 @@
                     addMarker(marker[i]);
                 }
 
-
+                marker.addEventListener("onmouseover", function(){
+                    marker.grow
+                });
 
                 // THE FUNCTION FOR ADDING A MARKER
                 function addMarker(props){
                     var marker = new google.maps.Marker({
                         position: props.coords,
                         map: map,
-                        icon: "{% static 'parks/img/firework.png' %}"
+                        icon: "{% static 'parks/img/firework.png' %}",
+                        animation: google.maps.Animation.DROP,
                         // content: props.content
                     });
-
+                    marker.addListener('click', togglefirework);
+                    function togglefirework() { 
+                        marker.setIcon('{% static "parks/img/fireworkasdafas.gif" %}');
+                    }
                     if(props.content){
                         var infowindow = new google.maps.InfoWindow({
                             content: props.content

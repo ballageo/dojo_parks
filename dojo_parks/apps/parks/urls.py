@@ -8,5 +8,4 @@ urlpatterns = [
     url(r'^create$', views.create),
     url(r'^infopage/(?P<parkid>\d+)$', views.parkinfo),
     url(r'^remove/(?P<parkid>\d+)$', views.removePark),
-    url(r'^fireworks/(?P<parkid>\d+)$', views.changeIcon),
 ]

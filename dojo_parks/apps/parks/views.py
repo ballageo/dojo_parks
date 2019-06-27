@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from apps.parks.models import *
 import requests
 from django.contrib import messages
+from random import randint
 
 # Create your views here.
 
@@ -29,7 +30,7 @@ def create(request):
             'address': request.POST['location'],
             'sensor': 'false',
             'region': 'us',
-            'key': 'AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0'
+            'key': 'AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0',
         }
         req = requests.get(googlemapsapi, params=params)
         res = req.json()
@@ -48,7 +49,11 @@ def create(request):
         res2 = req2.json()
         title = res2['result']['name']
         try:
-            review_text = res2['result']['reviews'][0]['text']
+            x = len(res2['result']['reviews'])
+        except:
+            review_text = "No reviews yet"
+        try:
+            review_text = res2['result']['reviews'][randint(1,x)]['text']
         except:
             review_text = "No reviews yet"
         try:
@@ -67,10 +72,12 @@ def create(request):
             hours = res2['result']['opening_hours']['weekday_text']
         except:
             hours = "No hours available"
+        formatted_address = res2['result']['formatted_address']
         # Create the park 
         Park.objects.create(
             title=title,
             address=request.POST['location'],
+            formatted_address=formatted_address,
             review=review_text,
             rating=rating,
             longitude=longitude,
@@ -141,10 +148,9 @@ def parkinfo(request, parkid):
 
 
 def removePark(request, parkid):
-    Park.objects.get(id = parkid).delete()
-    return redirect('/')
-
-
-def changeIcon(request, parkid):
-    clicked_park = Park.objects.get(id=parkid)
-    return redirect("/")
+    x = Park.objects.get(id = parkid)
+    if request.session['user_id'] == x.created_by.id :
+        x.delete()
+        return redirect('/')
+    else:
+        return redirect('/')
