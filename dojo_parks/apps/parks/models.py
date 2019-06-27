@@ -2,7 +2,6 @@ from django.db import models
 from apps.login.models import *
 import requests
 
-
 class ParkManager(models.Manager):
     def address_validator(self, postData):
         errors = {}
