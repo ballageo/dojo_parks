@@ -2,6 +2,16 @@ from django.db import models
 from apps.login.models import *
 
 # Create your models here
+class OperatingHours(models.Model):
+    monday = models.TextField()
+    tuesday = models.TextField()
+    wednesday = models.TextField()
+    thursday = models.TextField()
+    friday = models.TextField()
+    saturday = models.TextField()
+    sunday = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Park (models.Model):
