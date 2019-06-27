@@ -103,7 +103,7 @@
                 {% for park in all_parks %}
                 props = {
                     'coords': {lat: {{park.latitude}}, lng: {{park.longitude}}},
-                    'content': '<p><strong>{{park.title}}</strong></p><p>{{park.address}}</p>'
+                    'content': '<p id = "firework"><strong>{{park.title}}</strong></p><p>{{park.address}}</p>'
                 }
                 marker.push(props)
                 {% endfor %}
@@ -111,6 +111,7 @@
                 for (var i = 0; i < marker.length; i++){
                     addMarker(marker[i]);
                 }
+
 
 
                 // THE FUNCTION FOR ADDING A MARKER
@@ -133,9 +134,7 @@
                 }
             }
 
-
         </script>
-
 
         <script async defer 
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4HjeXhplfNZb1oPX3HlrQkFz2FuCzoAs&callback=initMap">
