@@ -84,7 +84,6 @@ def create(request):
         )
         return redirect("/")
 
-
 def parkinfo(request, parkid):
 
     park = Park.objects.get(id=parkid)
