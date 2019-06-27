@@ -67,10 +67,12 @@ def create(request):
             hours = res2['result']['opening_hours']['weekday_text']
         except:
             hours = "No hours available"
+        formatted_address = res2['result']['formatted_address']
         # Create the park 
         Park.objects.create(
             title=title,
             address=request.POST['location'],
+            formatted_address=formatted_address,
             review=review_text,
             rating=rating,
             longitude=longitude,

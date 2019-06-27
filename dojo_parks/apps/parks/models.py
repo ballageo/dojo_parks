@@ -33,6 +33,7 @@ class ParkManager(models.Manager):
 class Park (models.Model):
     title = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
+    formatted_address = models.CharField(max_length=255)
     review = models.TextField()
     rating = models.DecimalField(max_digits=2, decimal_places=1)
     longitude = models.DecimalField(max_digits=8, decimal_places=4)
