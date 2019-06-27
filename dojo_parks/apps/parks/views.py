@@ -103,7 +103,6 @@ def parkinfo(request, parkid):
 
     park = Park.objects.get(id=parkid) #Get the park from the parkid
     hours_str = park.operating_hours #Get the string for park operating hours
-    print(hours_str)
     if hours_str == "No hours listed":
         left_bracket = "No hours listed"
         right_bracket= ""
@@ -137,39 +136,40 @@ def parkinfo(request, parkid):
 
 
 
-    # # Trying to get the photos from the places api
-    # googlemapsapi = "https://maps.googleapis.com/maps/api/geocode/json"
-    # params = {
-    #         'address': park.address,
-    #         'sensor': 'false',
-    #         'region': 'us',
-    #         'key': 'AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0'
-    #     }
-    # req = requests.get(googlemapsapi, params=params)
-    # res = req.json()
-    # place_id = res['results'][0]['place_id']
-    # print(place_id)
+    # Trying to get the photos from the places api
+    googlemapsapi = "https://maps.googleapis.com/maps/api/geocode/json"
+    params = {
+            'address': park.address,
+            'sensor': 'false',
+            'region': 'us',
+            'key': 'AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0'
+        }
+    req = requests.get(googlemapsapi, params=params)
+    res = req.json()
+    place_id = res['results'][0]['place_id']
+    print(place_id)
 
 
-    # placesapi = "https://maps.googleapis.com/maps/api/place/details/json"
-    # params = {
-    #         "place_id": place_id,
-    #         "key": "AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0",
-    #         # "fields" : "photo"
-    #     }
-    # req2 = requests.get(placesapi, params=params)
-    # res2 = req2.json()
-    # print(res2['result'])
+    placesapi = "https://maps.googleapis.com/maps/api/place/details/json"
+    params = {
+            "place_id": place_id,
+            "key": "AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0",
+        }
+    req2 = requests.get(placesapi, params=params)
+    res2 = req2.json()
 
-    # # only get the 1st image, throwing a keyerror on 'photos'...works if this photo_id is hardcoded to any photo_reference
-    # photo_id = res2['result']['photos'][0]['photo_reference'] 
+    # only get the 1st image, throwing a keyerror on 'photos'...works if this photo_id is hardcoded to any photo_reference
+    try:
+        photo_id = res2['result']['photos'][0]['photo_reference']
+    except:
+        photo_id = "No Photo"
     
     context = {
         "selected_park": park,
         "split_hours" : split_list,
         "formatted_hours" : left_bracket,
         "formatted_hours2" : right_bracket,
-        "photo_reference" : "CmRaAAAAeJXXDzKtE0O7LMEL9kHnY7Y4zXnLthg1t4yALnjd9yH7uQLmhH_LdbU5-kavzEQML3tpexaquvsegJ0ZnSlOlhVvAqenKIK5ozan_yzq80EL0CKdF6HZgqv3Pgd0ScXPEhAPNr_rr8pKKHy-K5NmlL4fGhRGGsDKuDl05nFJNropoAvCbkbjdQ",
+        "photo_reference" : photo_id,
         # "key" :  "AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0" # don't have to pass in, can hardcode in html
     }
     return render(request, "parks/parkinfo.html", context)
