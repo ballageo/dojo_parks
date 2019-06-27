@@ -29,12 +29,14 @@
                 <p class="card-text"> Reviews: {{ selected_park.review }}</p>
 
                 <p class="card-text"> Rating: {{ selected_park.rating }}</p>
-
-                <p class="card-text"> {{ selected_park.operating_hours }}</p>
-                {% for hours in operating_hours %}
-                    <p class="card-text"> {{ hours }}</p>
-                {% endfor %}
-
+                <div class='hours d-inline-block'>
+                    <p class="card-text"> {{ selected_park.operating_hours }}</p>
+                    {% for hours in operating_hours %}
+                        <p class="card-text"> {{ hours }}</p>
+                    {% endfor %}
+                </div>
+                <img style = "max-height: 350px"class = "rig-img d-inline-block align-top offset-4" src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ photo }}&key=AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0" alt="">
+                
                 <p class="card-text">
                     <a href="{{ selected_park.website }}">Click here to visit this park's website</a>
                 </p>

@@ -113,7 +113,6 @@
                 //     content: props.content
                 // })
                 // // content.push(infowindow)
-                
 
                 // THE FUNCTION FOR ADDING A MARKER
                 function addMarker(props){
@@ -128,9 +127,9 @@
                         var infowindow = new google.maps.InfoWindow({
                             content: props.content
                         });
-                    marker.addListener('click', function() {
-                    infowindow.open(map, marker);
-                    });
+                        marker.addListener('click', function() {
+                        infowindow.open(map, marker);
+                        });
                     }
                 }
             }

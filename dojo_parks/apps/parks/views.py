@@ -31,10 +31,10 @@ def create(request):
         }
         req = requests.get(googlemapsapi, params=params)
         res = req.json()
-        print(res)
         latitude = res['results'][0]['geometry']['location']['lat']
         longitude = res['results'][0]['geometry']['location']['lng']
         place_id = res['results'][0]['place_id']
+        request.session['place_id'] = place_id
 
         # Google Places API
         placesapi = "https://maps.googleapis.com/maps/api/place/details/json"
@@ -69,7 +69,7 @@ def create(request):
         # Create the park 
         Park.objects.create(
             title=title,
-            address=formatted_address,
+            address=request.POST['location'],
             review=review_text,
             rating=rating,
             longitude=longitude,
@@ -82,8 +82,32 @@ def create(request):
         return redirect("/")
 
 def parkinfo(request, parkid):
+    googlemapsapi = "https://maps.googleapis.com/maps/api/geocode/json"
+    params = {
+        'address': Park.objects.get(id=parkid).address,
+        'sensor': 'false',
+        'region': 'us',
+        'key': 'AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0'
+    }
+    req = requests.get(googlemapsapi, params=params)
+    res = req.json()
+    place_id = res['results'][0]['place_id']
+    print(f"place id is {place_id}")
+    placesapi = "https://maps.googleapis.com/maps/api/place/details/json"
+    params = {
+        "place_id": place_id,
+        "key": "AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0",
+    }
+    req2 = requests.get(placesapi, params=params)
+    res2 = req2.json()
+    try:
+        photo = res2['result']['photos'][0]['photo_reference']
+    except:
+        photo = ""
+    print(f"photo id is {photo}")
     park = Park.objects.get(id=parkid)
     context = {
         "selected_park": park,
+        'photo': photo,
     }
     return render(request, "parks/parkinfo.html", context)
