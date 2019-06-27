@@ -12,25 +12,29 @@
             }
             .scroll{
                 height: 800px;
-                overflow-y: scroll; 
+                overflow-y: auto; 
                 word-wrap: break-word; 
         }
         </style>
+        <title>Find Me Fireworks</title>
     </head>
     <body>
         <nav class="navbar navbar-dark bg-dark">
             <h3 class="text-white">Dojo Parks</h3>
-            <a class='ml-auto mr-3' href="#">Home</a>
-            <a href="#">Logout</a>
+            <a class='ml-auto mr-3' href="/">Home</a>
+            <a href="/logout">Logout</a>
         </nav>
         <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-3 scroll">
                     {% for park in all_parks %}
                         <a href="infopage/{{park.id}}"><h5>{{park.title}}</h5></a>
+                        {% if park.created_by.id == 1 %}
+                        <a class="text-danger" href="delete"><small>Remove Park</small></a>
+                        {% endif %}
                         <p class='mb-0'><small>{{ park.phone_number }}</small></p>
                         <p class='mb-0'><small>{{ park.rating }}</small></p>
-                        <p class='mb-0'><small>{{ park.review }}</small></p>
+                        <p class='mb-0'><small>{{ park.review | truncatechars:100 }} <a href="infopage/{{park.id}}">Read Full Review</a></small></p>
                         <p class='mb-0'>Website: <small><a href="{{park.website}}" target="_blank"> {{ park.website }}</a></small></p>
                         <hr>
                     {% endfor %}
