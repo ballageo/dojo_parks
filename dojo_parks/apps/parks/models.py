@@ -57,9 +57,5 @@ class Park (models.Model):
     created_by = models.ForeignKey(User, related_name="parks_created")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-<<<<<<< HEAD
-
-=======
     objects = ParkManager()
->>>>>>> c95ca023da1a893a239e1d69c57c7fd6da9e6abe
 
