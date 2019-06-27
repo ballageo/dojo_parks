@@ -65,55 +65,67 @@
         </div>
         <script>
         // Initialize and add the map
+            
             function initMap() {
                 var options = {
                     zoom: 12,
-                    center: {lat: 47.61, lng: -122.2015}
+                    center: {lat: {{last_park.latitude}}, lng: {{last_park.longitude}}}
                 }
                 var map = new google.maps.Map(document.getElementById("map"), options);
 
-                google.maps.event.addListener(map, 'click', function(event){
-                    addMarker({coords: event.latLng});
-                });
-
+            
                 // STORING ALL THE MARKERS IN AN ARRAY
-                var markers = [
-                {
-                    coords: {lat: 47.6101, lng: -122.2015},
-                    iconImage: {url:"/static/parks/img/icon.png", scaledSize: new google.maps.Size(30,30)},
-                    content: '<p><strong>{{park.title}}</strong></p><p>Butthole, WA</p>'
-                },
-                {
-                    coords: {lat: 47, lng: -122}
-                }
-                ]
+                // var markers = [
+                // {
+                //     coords: coords,
+                //     iconImage: {url:"/static/parks/img/icon.png", scaledSize: new google.maps.Size(30,30)},
+                //     content: '<p><strong>Bellevue, WA</strong></p><p>Butthole, WA</p>'
+                // }
+                // ]
 
                 // LOOPING THROUGH ARRAY TO DISPLAY MARKERS
-                for (var i = 0; i < markers.length; i++){
-                    addMarker(markers[i]);
+                // for (var i = 0; i < markers.length; i++){
+                //     addMarker(markers[i]);
+                // }
+
+                // marker = []
+                // {% for park in all_parks %}
+                // coords = {lat: {{park.latitude}}, lng: {{park.longitude}}}
+                // content = '<p><strong>{{park.title}}</strong></p><p>{{park.address}}</p>'
+                // marker.push(coords)
+                // marker.push(content)
+                // {% endfor %}
+                marker = []
+                {% for park in all_parks %}
+                props = {
+                    'coords': {lat: {{park.latitude}}, lng: {{park.longitude}}}
                 }
+                marker.push(props)
+                {% endfor %}
+
+                for (var i = 0; i < marker.length; i++){
+                    addMarker(marker[i]);
+                }
+
+                
+                var infowindow = new google.maps.InfoWindow({
+                    content: props.content
+                })
+                // content.push(infowindow)
+
 
                 // THE FUNCTION FOR ADDING A MARKER
                 function addMarker(props){
                     var marker = new google.maps.Marker({
                         position: props.coords,
                         map: map,
+                        icon: {url: "/static/parks/img/icon.png", scaledSize: new google.maps.Size(30,30)},
+                        content: props.content
                     });
-
-                    if (props.iconImage){
-                        marker.setIcon(props.iconImage);
-                    }
-
-                    if (props.content){
-                        var infoWindow = new google.maps.InfoWindow({
-                            content: props.content
-                        });
-                        marker.addListener('click', function(){
-                            infoWindow.open(map,marker);
-                        });
-                    }
+                    marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
                 }
-                
             }
 
 
