@@ -30,8 +30,7 @@
 
                 <p class="card-text"> Rating: {{ selected_park.rating }}</p>
 
-                <p class="card-text"> {{ selected_park.operating_hours }}</p>
-                {% for hours in operating_hours %}
+                {% for hours in split_hours %}
                     <p class="card-text"> {{ hours }}</p>
                 {% endfor %}
 

@@ -3,16 +3,16 @@ from apps.login.models import *
 import requests
 
 # Create your models here
-class OperatingHours(models.Model):
-    monday = models.TextField()
-    tuesday = models.TextField()
-    wednesday = models.TextField()
-    thursday = models.TextField()
-    friday = models.TextField()
-    saturday = models.TextField()
-    sunday = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+# class OperatingHour(models.Model):
+#     monday = models.TextField()
+#     tuesday = models.TextField()
+#     wednesday = models.TextField()
+#     thursday = models.TextField()
+#     friday = models.TextField()
+#     saturday = models.TextField()
+#     sunday = models.TextField()
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
 
 
 class ParkManager(models.Manager):
@@ -57,9 +57,6 @@ class Park (models.Model):
     created_by = models.ForeignKey(User, related_name="parks_created")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-<<<<<<< HEAD
 
-=======
     objects = ParkManager()
->>>>>>> c95ca023da1a893a239e1d69c57c7fd6da9e6abe
 
