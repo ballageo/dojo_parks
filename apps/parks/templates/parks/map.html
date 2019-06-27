@@ -16,6 +16,7 @@
                 word-wrap: break-word; 
         }
         </style>
+        <title>Find Me Fireworks</title>
     </head>
     <body>
         <nav class="navbar navbar-dark bg-dark">
@@ -28,6 +29,9 @@
                 <div class="col-3 scroll">
                     {% for park in all_parks %}
                         <a href="infopage/{{park.id}}"><h5>{{park.title}}</h5></a>
+                        {% if park.created_by.id == request.session.user_id%}
+                        <a class="text-danger" href="delete"><small>Remove Park</small></a>
+                        {% endif %}
                         <p class='mb-0'><small>{{ park.phone_number }}</small></p>
                         <p class='mb-0'><small>{{ park.rating }}</small></p>
                         <p class='mb-0'><small>{{ park.review | truncatechars:100 }} <a href="infopage/{{park.id}}">Read Full Review</a></small></p>
