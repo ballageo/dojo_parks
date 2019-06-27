@@ -12,7 +12,7 @@
             }
             .scroll{
                 height: 800px;
-                overflow-y: scroll; 
+                overflow-y: auto; 
                 word-wrap: break-word; 
         }
         </style>
@@ -30,7 +30,7 @@
                         <a href="infopage/{{park.id}}"><h5>{{park.title}}</h5></a>
                         <p class='mb-0'><small>{{ park.phone_number }}</small></p>
                         <p class='mb-0'><small>{{ park.rating }}</small></p>
-                        <p class='mb-0'><small>{{ park.review }}</small></p>
+                        <p class='mb-0'><small>{{ park.review | truncatechars:100 }} <a href="infopage/{{park.id}}">Read Full Review</a></small></p>
                         <p class='mb-0'>Website: <small><a href="{{park.website}}" target="_blank"> {{ park.website }}</a></small></p>
                         <hr>
                     {% endfor %}
