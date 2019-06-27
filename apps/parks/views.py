@@ -74,24 +74,22 @@ def create(request):
 def parkinfo(request, parkid):
 
     park = Park.objects.get(id=parkid)
-    print(park.operating_hours) # an array of 7 strings
+    print(park.operating_hours)  # an array of 7 strings
 
     # The code below should loop through the array and print each string, but it's treating the whole park.operating_hours as 1 string, index 0 is the [....WTF???
 
     # for text in  enumerate(park.operating_hours):
     #     print(text)
 
-    for text in park.operating_hours:
-        print(text)
+    # for text in park.operating_hours:
+    #     print(text)
     # for  i in range(len(park.operating_hours)) :
-    #     print(park.operating_hours[i]) 
+    #     print(park.operating_hours[i])
     #     i += 1
 
     # [print(i) for i in park.operating_hours]
 
-    print(park.operating_hours)
-
-    
+    # print(park.operating_hours)
 
     context = {
         "selected_park": park,
