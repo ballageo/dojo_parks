@@ -8,7 +8,9 @@ from django.contrib import messages
 
 def index(request):
     context = {
+        "user" : User.objects.get(id=request.session["user_id"]),
         "all_parks": Park.objects.all(),
+        "sidebar_parks": Park.objects.all().order_by("-id")[:10],
         "last_park": Park.objects.last(),
     }
     return render(request, 'parks/map.html', context)
@@ -31,10 +33,10 @@ def create(request):
         }
         req = requests.get(googlemapsapi, params=params)
         res = req.json()
-        print(res)
         latitude = res['results'][0]['geometry']['location']['lat']
         longitude = res['results'][0]['geometry']['location']['lng']
         place_id = res['results'][0]['place_id']
+        request.session['place_id'] = place_id
 
         # Google Places API
         placesapi = "https://maps.googleapis.com/maps/api/place/details/json"
@@ -45,7 +47,6 @@ def create(request):
         req2 = requests.get(placesapi, params=params)
         res2 = req2.json()
         title = res2['result']['name']
-        formatted_address = res2['result']['formatted_address']
         try:
             review_text = res2['result']['reviews'][0]['text']
         except:
@@ -69,7 +70,7 @@ def create(request):
         # Create the park 
         Park.objects.create(
             title=title,
-            address=formatted_address,
+            address=request.POST['location'],
             review=review_text,
             rating=rating,
             longitude=longitude,
@@ -77,13 +78,68 @@ def create(request):
             operating_hours=hours,
             website=website,
             phone_number=phone,
-            created_by=User.objects.get(id=1)
+            created_by=User.objects.get(id=request.session["user_id"])
         )
         return redirect("/")
 
 def parkinfo(request, parkid):
     park = Park.objects.get(id=parkid)
+    hours_str = park.operating_hours #Get the string for park operating hours
+    print(hours_str)
+    if hours_str == "No hours available":
+        left_bracket = "No hours listed"
+        right_bracket= ""
+        split_list = []
+    else:
+        split_list = hours_str.split(",") #Split the string into a list of strings, separated by commas
+
+        #Replace [] and ' with empty string
+        for word in split_list:
+            if "[" in word:
+                left_bracket = word.replace("[", "") #Only returns Monday without [
+        for word in split_list:
+            if "]" in word:
+                right_bracket = word.replace("]", "") #Only returns Sunday without ]
+        for word in split_list:
+            if "'" in word:
+                quotation = word.replace("'", "") #Not working
+        
+        split_list = split_list[1:-1]
+    googlemapsapi = "https://maps.googleapis.com/maps/api/geocode/json"
+    params = {
+        'address': Park.objects.get(id=parkid).address,
+        'sensor': 'false',
+        'region': 'us',
+        'key': 'AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0'
+    }
+    req = requests.get(googlemapsapi, params=params)
+    res = req.json()
+    place_id = res['results'][0]['place_id']
+    print(f"place id is {place_id}")
+    placesapi = "https://maps.googleapis.com/maps/api/place/details/json"
+    params = {
+        "place_id": place_id,
+        "key": "AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0",
+    }
+    req2 = requests.get(placesapi, params=params)
+    res2 = req2.json()
+    try:
+        photo = res2['result']['photos'][0]['photo_reference']
+    except:
+        photo = ""
+    print(f"photo id is {photo}")
+
+    
     context = {
         "selected_park": park,
+        'photo': photo,
+        "split_hours" : split_list,
+        "formatted_hours" : left_bracket,
+        "formatted_hours2" : right_bracket,
     }
     return render(request, "parks/parkinfo.html", context)
+
+
+def removePark(request, parkid):
+    Park.objects.get(id = parkid).delete()
+    return redirect('/')
