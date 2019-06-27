@@ -29,8 +29,8 @@
                 <div class="col-3 scroll">
                     {% for park in all_parks %}
                         <a href="infopage/{{park.id}}"><h5>{{park.title}}</h5></a>
-                        {% if park.created_by.id == 1 %}
-                        <a class="text-danger" href="delete"><small>Remove Park</small></a>
+                        {% if park.created_by.id == user.id %}
+                        <a class="text-danger" href="remove/{{park.id}}"><small>Remove Park</small></a>
                         {% endif %}
                         <p class='mb-0'><small>{{ park.phone_number }}</small></p>
                         <p class='mb-0'><small>{{ park.rating }}</small></p>
