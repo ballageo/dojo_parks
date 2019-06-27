@@ -84,21 +84,42 @@ def create(request):
         )
         return redirect("/")
 
+
 def parkinfo(request, parkid):
 
     park = Park.objects.get(id=parkid)
-    print(park.operating_hours)  # an array of 7 strings
+    # print(park.operating_hours)  # an array of 7 strings
     hours_str = park.operating_hours
     split_list = hours_str.split(",")
-    split_list = split_list[1:-1]
+    # print(split_list)
 
-    # trying to remove beginning and ending quotation marks
+    for word in split_list:
+        if "[" in word:
+            left_bracket = word.replace("[", "")
+    for word in split_list:
+        if "]" in word:
+            right_bracket = word.replace("]", "")
+    for word in split_list:
+        if "'" in word:
+            quotation = word.replace("'", "")
+    # for i in range(len(split_list)):
+    #     if split_list[i] == "'":
+    #         quotation = split_list[i].replace("'","")
+    #     print(quotation)
+
+
+    split_list = split_list[1:-1] # cutting off Monday and Sunday
+
+
+    # trying to remove beginning and ending quotation
     # for hour in split_list:
     #     split_list[hour].replace("'","")
     # print(split_list)
 
     context = {
         "selected_park": park,
-        "split_hours" : split_list
+        "split_hours" : split_list,
+        "formatted_hours" : left_bracket,
+        "formatted_hours2" : right_bracket,
     }
     return render(request, "parks/parkinfo.html", context)

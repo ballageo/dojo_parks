@@ -30,9 +30,15 @@
 
                 <p class="card-text"> Rating: {{ selected_park.rating }}</p>
 
+                <p class="card-text">{{formatted_hours}}</p>
+                
+                
+
                 {% for hours in split_hours %}
                     <p class="card-text"> {{ hours }}</p>
                 {% endfor %}
+                
+                <p class="card-text">{{formatted_hours2}}</p>
 
                 <p class="card-text">
                     <a href="{{ selected_park.website }}">Click here to visit this park's website</a>
