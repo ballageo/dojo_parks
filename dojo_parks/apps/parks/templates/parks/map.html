@@ -17,6 +17,7 @@
         }
         </style>
         <title>Find Me Fireworks</title>
+        {%load static%}
     </head>
     <body>
         <nav class="navbar navbar-dark bg-dark">
@@ -42,7 +43,7 @@
                 <div class="col-7">
                     <div class="row mb-4 mt-3 align-items-center">
                         <div class="col-6">
-                            <h5 class="mb-3">Add a park to our database!</h5>
+                            <h5 class="mb-3" id="Anchor">Add a park to our database!</h5>
                             <form action="create" method = 'post'>
                                 {% csrf_token %}
                                 <div class="input-group">
@@ -101,9 +102,19 @@
                 // {% endfor %}
                 marker = []
                 {% for park in all_parks %}
+                
+                iwcontentstr = '<div id="content">'+'<div id="siteNotice">'+'</div>'+
+                                '<h5 id="firstHeading" class="firstHeading">{{park.title}}</h1>'+'<div id="bodyContent">'+
+                                '<p><b>Address:</b>, {{park.address}}</p>' +
+                                '<a href="#" id="Anchor">Fireworks?</a> '+
+                                '</div>'+
+                                '</div>';
+                
+                
+                
                 props = {
                     'coords': {lat: {{park.latitude}}, lng: {{park.longitude}}},
-                    'content': '<p><strong>{{park.title}}</strong></p><p>{{park.address}}</p>'
+                    'content': iwcontentstr
                 }
                 marker.push(props)
                 {% endfor %}
@@ -124,7 +135,7 @@
                     var marker = new google.maps.Marker({
                         position: props.coords,
                         map: map,
-                        icon: {url: "/static/parks/img/icon.png", scaledSize: new google.maps.Size(30,30)},
+                        icon: "{% static 'parks/img/firework.png' %}"
                         // content: props.content
                     });
 
@@ -135,12 +146,15 @@
                     marker.addListener('click', function() {
                     infowindow.open(map, marker);
                     });
+                    // marker.addListener('mouseout', function() {
+                    // infowindow.close();
+                    // });
                     }
                 }
             }
 
-
         </script>
+
 
 
         <script async defer 

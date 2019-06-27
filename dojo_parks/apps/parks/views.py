@@ -94,3 +94,8 @@ def parkinfo(request, parkid):
 def removePark(request, parkid):
     Park.objects.get(id = parkid).delete()
     return redirect('/')
+
+
+def changeIcon(request, parkid):
+    clicked_park = Park.objects.get(id=parkid)
+    return redirect("/")
