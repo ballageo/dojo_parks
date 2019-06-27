@@ -40,3 +40,6 @@ def validate_login(request):
         return redirect("/")
 
 
+def logout(request):
+    request.session.clear()
+    return redirect('/')
