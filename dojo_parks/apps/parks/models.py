@@ -2,19 +2,6 @@ from django.db import models
 from apps.login.models import *
 import requests
 
-# Create your models here
-# class OperatingHour(models.Model):
-#     monday = models.TextField()
-#     tuesday = models.TextField()
-#     wednesday = models.TextField()
-#     thursday = models.TextField()
-#     friday = models.TextField()
-#     saturday = models.TextField()
-#     sunday = models.TextField()
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-
-
 class ParkManager(models.Manager):
     def address_validator(self, postData):
         errors = {}
@@ -51,7 +38,6 @@ class Park (models.Model):
     longitude = models.DecimalField(max_digits=8, decimal_places=4)
     latitude = models.DecimalField(max_digits=8, decimal_places=4)
     operating_hours = models.TextField(blank=True)
-    # operating_hours = models.ForeignKey(OperatingHour, related_name = "parks")
     website = models.CharField(max_length=255, default="Sorry, no website found")
     phone_number = models.CharField(max_length=20, default="Sorry, no phone number found")
     created_by = models.ForeignKey(User, related_name="parks_created")

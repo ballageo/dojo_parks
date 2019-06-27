@@ -9,6 +9,7 @@ from django.contrib import messages
 def index(request):
     context = {
         "all_parks": Park.objects.all(),
+        "last_park": Park.objects.last(),
     }
     return render(request, 'parks/map.html', context)
 
@@ -17,7 +18,7 @@ def create(request):
     errors = Park.objects.address_validator(request.POST)
     if len(errors) > 0:
         for key, value in errors.items():
-            messages.error(request, value, extra_tags=key)
+            messages.error(request, value, extra_tags = key)
         return redirect("/")
     else:
         # Google Maps API
@@ -45,45 +46,27 @@ def create(request):
         res2 = req2.json()
         title = res2['result']['name']
         formatted_address = res2['result']['formatted_address']
-        review_text = res2['result']['reviews'][0]['text']
-        website = res2['result']['website']
-        rating = res2['result']['rating']
-
-        # # Get the photo
-        # photo_id = res2['result']['photos'][0]['photo_reference']
-        # params2 = {
-        #     "place_id": place_id,
-        #     "key": "AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0",
-        #     "photo_reference": photo_id,
-        #     "maxwidth": 400
-        # }
-        # raw_image_data = requests.get(placesapi, params=params2)
-        # print(raw_image_data)
-        # print(photo_id)
-
         try:
-            x = res2['result']['opening_hours']
+            review_text = res2['result']['reviews'][0]['text']
         except:
-            hours = "No hours listed"
-        else:
-            monday = res2['result']['opening_hours']['weekday_text'][0]
-            tuesday = res2['result']['opening_hours']['weekday_text'][1]
-            wednesday = res2['result']['opening_hours']['weekday_text'][2]
-            thursday = res2['result']['opening_hours']['weekday_text'][3]
-            friday = res2['result']['opening_hours']['weekday_text'][4]
-            saturday = res2['result']['opening_hours']['weekday_text'][5]
-            sunday = res2['result']['opening_hours']['weekday_text'][6]
-            hours = [monday, tuesday, wednesday,
-                thursday, friday, saturday, sunday]
+            review_text = "No reviews yet"
+        try:
+            website = res2['result']['website']
+        except:
+            website = "Sorry, no website available"
+        try:
+            rating = res2['result']['rating']
+        except:
+            rating = 0
         try:
             phone = res2['result']['formatted_phone_number']
         except:
             phone = "No Phone number available"
-        # try:
-        #     hours = res2['result']['opening_hours']['weekday_text']
-        # except:
-        #     hours = "No hours available"
-        # Create the park
+        try:
+            hours = res2['result']['opening_hours']['weekday_text']
+        except:
+            hours = "No hours available"
+        # Create the park 
         Park.objects.create(
             title=title,
             address=formatted_address,
@@ -97,7 +80,6 @@ def create(request):
             created_by=User.objects.get(id=1)
         )
         return redirect("/")
-
 
 def parkinfo(request, parkid):
 
