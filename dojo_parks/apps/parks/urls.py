@@ -4,9 +4,12 @@ from . import views
 from apps.login.urls import urlpatterns
 
 urlpatterns = [
-    url(r'^$', views.index),
-    url(r'^create$', views.create),
+    url(r'^infopage/dark/(?P<parkid>\d+)$', views.darkparkinfo),
     url(r'^infopage/(?P<parkid>\d+)$', views.parkinfo),
-    url(r'^remove/(?P<parkid>\d+)$', views.removePark),
     url(r'^darkmode$', views.darkmode),
-]
+    url(r'^create$', views.create),
+    url(r'^createdark$', views.createdark),
+    url(r'^remove/(?P<parkid>\d+)$', views.removePark),
+    url(r'^remove/dark/(?P<parkid>\d+)$', views.removeParkDark),
+    url(r'^$', views.index),
+    ]

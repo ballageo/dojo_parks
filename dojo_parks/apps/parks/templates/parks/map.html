@@ -20,11 +20,11 @@
         {%load static%}
     </head>
     <body>
-        <nav class="navbar navbar-dark bg-dark">
+        <nav class="navbar navbar-dark bg-info">
             <h3 class="text-white">Dojo Parks</h3>
-            <a href="darkmode" class = 'ml-auto mr-3'><button class='btn btn-outline-info btn-sm'>Night Mode</button></a>
-            <a class='ml-auto mr-3' href="/">Home</a>
-            <a href="/logout">Logout</a>
+            <a href="darkmode" class = 'ml-auto mr-3'><button class='btn btn-outline-light btn-sm'>Night Mode</button></a>
+            <a class='ml-auto mr-3 text-light' href="/">Home</a>
+            <a class="text-light" href="/logout">Logout</a>
         </nav>
         <div class="container-fluid">
             <div class="row">
@@ -50,7 +50,7 @@
                                 <div class="input-group">
                                     <input type="text" name = 'location'>
                                     <div class="input-group-append">
-                                        <button class='btn btn-primary btn-sm' type= 'submit'>Submit</button>
+                                        <button class='btn btn-info btn-sm' type= 'submit'>Submit</button>
                                     </div>
                                 </div>
                                 {% for message in messages %}

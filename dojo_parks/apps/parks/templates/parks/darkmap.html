@@ -14,7 +14,10 @@
                 height: 800px;
                 overflow-y: auto; 
                 word-wrap: break-word; 
-        }
+            }
+            a{
+                color: rgb(143, 196, 209);
+            }
         </style>
         <title>Find Me Fireworks</title>
         {%load static%}
@@ -26,17 +29,17 @@
             <a class='ml-auto mr-3' href="/">Home</a>
             <a href="/logout">Logout</a>
         </nav>
-        <div class="container-fluid">
+        <div class="container-fluid bg-dark">
             <div class="row">
-                <div class="col-3 scroll">
+                <div class="col-3 scroll text-white">
                     {% for park in sidebar_parks %}
-                    <a href="infopage/{{park.id}}"><header>{{park.title}}</header></a>
+                    <a href="infopage/dark/{{park.id}}"><header>{{park.title}}</header></a>
                     <span class='small font-weight-bold'>Phone: </span><span class="small">{{ park.phone_number }}</span><br>
                     <span class='small font-weight-bold'>Rating: </span><span class="small">{{ park.rating }}</span><br>
                     <span class='small font-weight-bold'>Review: </span><span class="small">{{ park.review | truncatechars:85 }} <a href="infopage/{{park.id}}" class="small">Read Full Review</a></span><br>
                     <span class='small font-weight-bold'>Webite: </span><span class="small"><a href="{{park.website}}" target="_blank"> {{ park.website }}</a></span><br>
                     {% if park.created_by.id == user.id %}
-                    <a class="text-danger" href="remove/{{park.id}}"><span class="small">Remove Park</span></a>
+                    <a class="text-danger" href="remove/dark/{{park.id}}"><span class="small">Remove Park</span></a>
                     {% endif %}
                     <hr>
                     {% endfor %}
@@ -44,13 +47,13 @@
                 <div class="col-7">
                     <div class="row mb-4 mt-3 align-items-center">
                         <div class="col-6">
-                            <h5 class="mb-3" id="Anchor">Add a park to our database!</h5>
-                            <form action="create" method = 'post'>
+                            <h5 class="mb-3 text-white" id="Anchor">Add a park to our database!</h5>
+                            <form action="createdark" method = 'post'>
                                 {% csrf_token %}
                                 <div class="input-group">
                                     <input type="text" name = 'location'>
                                     <div class="input-group-append">
-                                        <button class='btn btn-primary btn-sm' type= 'submit'>Submit</button>
+                                        <button class='btn btn-info btn-sm' type= 'submit'>Submit</button>
                                     </div>
                                 </div>
                                 {% for message in messages %}

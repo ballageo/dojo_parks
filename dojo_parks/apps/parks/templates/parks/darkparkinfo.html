@@ -20,17 +20,20 @@
             width: 100%;
             height: 100%;
         }
+        a{
+            color:  rgb(143, 196, 209);
+        }
     </style>
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid bg-dark">
         <nav class="navbar navbar-dark bg-dark">
             <h3 class="text-white">Dojo Parks</h3>
             <a class='ml-auto mr-3' href="/">Home</a>
             <a href="/logout">Logout</a>
         </nav>
-        <div class="card w-50 offset-3 mt-5 border border-info">
+        <div class="card w-50 offset-3 mt-5 border border-light bg-dark text-white">
             {#<img class="card-img-top" src="/images/pathToYourImage.png" alt="Card image cap">#}
             <div class="card-body">
                 <h4 class="card-title">{{ selected_park.title }}</h4>
@@ -62,7 +65,7 @@
                         {% else %}
                         <p class="card-text">No Website Available</p>
                         {% endif %}
-                        <a href="/" class="btn btn-info">Home</a>
+                        <a href="/parks/darkmode" class="btn btn-info">Home</a>
                     </div>
                     <div class="col-6">
                         
