@@ -131,15 +131,24 @@ def parkinfo(request, parkid):
     req2 = requests.get(placesapi, params=params)
     res2 = req2.json()
     try:
-        photo = res2['result']['photos'][0]['photo_reference']
+        photo0 = res2['result']['photos'][0]['photo_reference']
     except:
-        photo = ""
-    print(f"photo id is {photo}")
+        photo0 = ""
+    try:
+        photo1 = res2['result']['photos'][1]['photo_reference']
+    except:
+        photo1 = ""
+    try:
+        photo2 = res2['result']['photos'][2]['photo_reference']
+    except:
+        photo2 = ""
 
     
     context = {
         "selected_park": park,
-        'photo': photo,
+        'photo0': photo0,
+        'photo1': photo1,
+        'photo2': photo2,
         "split_hours" : split_list,
         "formatted_hours" : left_bracket,
         "formatted_hours2" : right_bracket,
