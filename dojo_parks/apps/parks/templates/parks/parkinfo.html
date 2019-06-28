@@ -24,13 +24,14 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-dark bg-info">
+        <h3 class="text-white">Dojo Parks</h3>
+        <a href="/parks/infopage/dark/{{selected_park.id}}" class="ml-auto mr-3"><button
+                class='btn btn-outline-light btn-sm'>Night Mode</button></a>
+        <a class='ml-auto mr-3 text-light' href="/">Home</a>
+        <a class='text-light' href="/logout">Logout</a>
+    </nav>
     <div class="container-fluid">
-        <nav class="navbar navbar-dark bg-info">
-            <h3 class="text-white">Dojo Parks</h3>
-            <a href="/parks/infopage/dark/{{selected_park.id}}" class = "ml-auto mr-3"><button class='btn btn-outline-light btn-sm'>Night Mode</button></a>
-            <a class='ml-auto mr-3 text-light' href="/">Home</a>            
-            <a class = 'text-light' href="/logout">Logout</a>
-        </nav>  
         <div class="card w-50 offset-3 mt-5 border border-info">
             {#<img class="card-img-top" src="/images/pathToYourImage.png" alt="Card image cap">#}
             <div class="card-body">
@@ -58,7 +59,8 @@
                         </div> <br><br>
                         {% if selected_park.website != "Sorry, no website available" %}
                         <p class="card-text">
-                            <a target="_blank" href="{{ selected_park.website }}">Click here to visit this park's website</a>
+                            <a target="_blank" href="{{ selected_park.website }}">Click here to visit this park's
+                                website</a>
                         </p> <br>
                         {% else %}
                         <p class="card-text">No Website Available</p>
@@ -66,7 +68,7 @@
                         <a href="/" class="btn btn-info">Home</a>
                     </div>
                     <div class="col-6">
-                        
+
                         <div id="demo" class="carousel slide" data-ride="carousel">
                             <!-- Indicators -->
                             <ul class="carousel-indicators">
@@ -78,21 +80,21 @@
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
                                     <img style="height: 350px" class=""
-                                    src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ photo0 }}&key=AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0"
-                                    alt="">
+                                        src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ photo0 }}&key=AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0"
+                                        alt="">
                                 </div>
                                 <div class="carousel-item">
                                     <img style="height: 350px" class=""
-                                    src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ photo1 }}&key=AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0"
-                                    alt="">
+                                        src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ photo1 }}&key=AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0"
+                                        alt="">
                                 </div>
                                 <div class="carousel-item">
                                     <img style="height: 350px" class=""
-                                    src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ photo2 }}&key=AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0"
-                                    alt="">
+                                        src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ photo2 }}&key=AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0"
+                                        alt="">
                                 </div>
                             </div>
-                            
+
                             <!-- Left and right controls -->
                             <a class="carousel-control-prev" href="#demo" data-slide="prev">
                                 <span class="carousel-control-prev-icon"></span>
