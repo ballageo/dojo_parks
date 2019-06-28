@@ -18,15 +18,18 @@
             a{
                 color: rgb(143, 196, 209);
             }
+            .container-fluid {
+            height:100vh;
+        }
         </style>
         <title>Find Me Fireworks</title>
         {%load static%}
     </head>
     <body>
-        <nav class="navbar navbar-dark bg-dark">
+        <nav class="navbar navbar-dark bg-dark border-bottom border-light">
             <h3 class="text-white">Dojo Parks</h3>
             <a href="/" class = "ml-auto mr-3"><button class='btn btn-outline-info btn-sm'>Day Mode</button></a>
-            <a class='ml-auto mr-3' href="/">Home</a>
+            <a class='ml-auto mr-3' href="/parks/darkmode">Home</a>
             <a href="/logout">Logout</a>
         </nav>
         <div class="container-fluid bg-dark">
@@ -36,7 +39,7 @@
                     <a href="infopage/dark/{{park.id}}"><header>{{park.title}}</header></a>
                     <span class='small font-weight-bold'>Phone: </span><span class="small">{{ park.phone_number }}</span><br>
                     <span class='small font-weight-bold'>Rating: </span><span class="small">{{ park.rating }}</span><br>
-                    <span class='small font-weight-bold'>Review: </span><span class="small">{{ park.review | truncatechars:85 }} <a href="infopage/{{park.id}}" class="small">Read Full Review</a></span><br>
+                    <span class='small font-weight-bold'>Review: </span><span class="small">{{ park.review | truncatechars:85 }} <a href="infopage/dark/{{park.id}}" class="small">Read Full Review</a></span><br>
                     <span class='small font-weight-bold'>Webite: </span><span class="small"><a href="{{park.website}}" target="_blank"> {{ park.website }}</a></span><br>
                     {% if park.created_by.id == user.id %}
                     <a class="text-danger" href="remove/dark/{{park.id}}"><span class="small">Remove Park</span></a>
