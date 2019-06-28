@@ -23,13 +23,18 @@
         a{
             color:  rgb(143, 196, 209);
         }
+
+        .container-fluid {
+            height:100vh;
+        }
     </style>
 </head>
 
 <body>
     <div class="container-fluid bg-dark">
-        <nav class="navbar navbar-dark bg-dark">
+        <nav class="navbar navbar-dark bg-dark border-bottom border-light">
             <h3 class="text-white">Dojo Parks</h3>
+            <a href="/parks/infopage/{{selected_park.id}}" class = "ml-auto mr-3"><button class='btn btn-outline-info btn-sm'>Day Mode</button></a>
             <a class='ml-auto mr-3' href="/parks/darkmode">Home</a>
             <a href="/logout">Logout</a>
         </nav>
