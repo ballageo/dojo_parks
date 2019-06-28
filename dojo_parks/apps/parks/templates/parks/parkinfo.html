@@ -24,35 +24,52 @@
             <a class='ml-auto mr-3' href="/">Home</a>
             <a href="/logout">Logout</a>
         </nav>
-        <div class="card w-50 offset-3 mt-5">
+        <div class="card w-50 offset-3 mt-5 border border-primary">
             {#<img class="card-img-top" src="/images/pathToYourImage.png" alt="Card image cap">#}
             <div class="card-body">
                 <h4 class="card-title">{{ selected_park.title }}</h4>
 
-                <p class="card-text"> Address: {{ selected_park.address }}</p>
+                <span class='font-weight-bold'>Address: </span>
+                <p class="card-text"> {{ selected_park.formatted_address }}</p>
 
-                <p class="card-text"> Phone Number: {{ selected_park.phone_number }}</p>
+                <span class='font-weight-bold'>Phone Number: </span>
+                <p class="card-text">{{ selected_park.phone_number }}</p>
 
-                <p class="card-text"> Reviews: {{ selected_park.review }}</p>
-                
-                <p class="card-text"> Rating: {{ selected_park.rating }}</p>
-                <div class='hours d-inline-block'>
-                    <span class='font-weight-bold'>Hours: </span><br>
-                    <span class="card-text"> {{ formatted_hours }}</span><br>
-                    {% for hours in split_hours %}
-                        <span class="card-text"> {{ hours }}</span><br>
-                    {% endfor %}
-                    <span class="card-text">{{formatted_hours2}}</span><br>
+                <span class='font-weight-bold'>Reviews: </span>
+                <p class="card-text">{{ selected_park.review }}</p>
+
+                <p class="card-text"> <span class='font-weight-bold'>Rating: </span> {{ selected_park.rating }}</p>
+                <div class="row">
+                    <div class="col-6">
+                        <div class='hours d-inline-block'>
+                            <span class='font-weight-bold'>Hours: </span><br>
+                            <span class="card-text"> {{ formatted_hours }}</span><br>
+                            {% for hours in split_hours %}
+                            <span class="card-text"> {{ hours }}</span><br>
+                            {% endfor %}
+                            <span class="card-text">{{formatted_hours2}}</span><br>
+                        </div> <br><br>
+                        {% if selected_park.website != "Sorry, no website available" %}
+                        <p class="card-text">
+                            <a target="_blank" href="{{ selected_park.website }}">Click here to visit this park's website</a>
+                        </p> <br>
+                        {% else %}
+                        <p class="card-text">No Website Available</p>
+                        {% endif %}
+                        <a href="/" class="btn btn-primary">Home</a>
+                    </div>
+                    <div class="col-6">
+                        <img style="max-height: 350px" class="rig-img d-inline-block align-top  z-depth-3"
+                            src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ photo }}&key=AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0"
+                            alt="">
+                    </div>
+                    <div class="row offset-10 mt-5">
+                        <p class="small">Created by: {{ selected_park.created_by.first_name }}</p>
+                    </div>
                 </div>
-                <img style = "max-height: 350px"class = "rig-img d-inline-block align-top float-right" src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={{ photo }}&key=AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0" alt="">
-                
-                <p class="card-text">
-                    <a href="{{ selected_park.website }}">Click here to visit this park's website</a>
-                </p>
 
-                <a href="/" class="btn btn-primary">Home</a>
 
-                <p class="small text-right">Created by: {{ selected_park.created_by.first_name }}</p>
+
 
             </div>
         </div>

@@ -17,6 +17,7 @@
         }
         </style>
         <title>Find Me Fireworks</title>
+        {%load static%}
     </head>
     <body>
         <nav class="navbar navbar-dark bg-dark">
@@ -29,20 +30,20 @@
                 <div class="col-3 scroll">
                     {% for park in sidebar_parks %}
                     <a href="infopage/{{park.id}}"><header>{{park.title}}</header></a>
-                    {% if park.created_by.id == user.id %}
-                    {% endif %}
                     <span class='small font-weight-bold'>Phone: </span><span class="small">{{ park.phone_number }}</span><br>
                     <span class='small font-weight-bold'>Rating: </span><span class="small">{{ park.rating }}</span><br>
-                    <span class='small font-weight-bold'>Review: </span><span class="small">{{ park.review | truncatechars:75 }} <a href="infopage/{{park.id}}" class="small">Read Full Review</a></span><br>
+                    <span class='small font-weight-bold'>Review: </span><span class="small">{{ park.review | truncatechars:85 }} <a href="infopage/{{park.id}}" class="small">Read Full Review</a></span><br>
                     <span class='small font-weight-bold'>Webite: </span><span class="small"><a href="{{park.website}}" target="_blank"> {{ park.website }}</a></span><br>
+                    {% if park.created_by.id == user.id %}
                     <a class="text-danger" href="remove/{{park.id}}"><span class="small">Remove Park</span></a>
+                    {% endif %}
                     <hr>
                     {% endfor %}
                 </div>
                 <div class="col-7">
                     <div class="row mb-4 mt-3 align-items-center">
                         <div class="col-6">
-                            <h5 class="mb-3">Add a park to our database!</h5>
+                            <h5 class="mb-3" id="Anchor">Add a park to our database!</h5>
                             <form action="create" method = 'post'>
                                 {% csrf_token %}
                                 <div class="input-group">
@@ -101,9 +102,19 @@
                 // {% endfor %}
                 marker = []
                 {% for park in all_parks %}
+                
+                iwcontentstr = '<div id="content">'+'<div id="siteNotice">'+'</div>'+
+                                '<h5 id="firstHeading" class="firstHeading">{{park.title}}</h1>'+'<div id="bodyContent">'+
+                                '<p><b>Address:</b> {{park.formatted_address}}</p>' +
+                                '<a href="#" id="Anchor">Fireworks?</a> '+
+                                '</div>'+
+                                '</div>';
+                
+                
+                
                 props = {
                     'coords': {lat: {{park.latitude}}, lng: {{park.longitude}}},
-                    'content': '<p><strong>{{park.title}}</strong></p><p>{{park.address}}</p>'
+                    'content': iwcontentstr
                 }
                 marker.push(props)
                 {% endfor %}
@@ -112,16 +123,23 @@
                     addMarker(marker[i]);
                 }
 
+                marker.addEventListener("onmouseover", function(){
+                    marker.grow
+                });
 
                 // THE FUNCTION FOR ADDING A MARKER
                 function addMarker(props){
                     var marker = new google.maps.Marker({
                         position: props.coords,
                         map: map,
-                        icon: {url: "/static/parks/img/icon.png", scaledSize: new google.maps.Size(30,30)},
+                        icon: "{% static 'parks/img/firework.png' %}",
+                        animation: google.maps.Animation.DROP,
                         // content: props.content
                     });
-
+                    marker.addListener('click', togglefirework);
+                    function togglefirework() { 
+                        marker.setIcon('{% static "parks/img/fireworkasdafas.gif" %}');
+                    }
                     if(props.content){
                         var infowindow = new google.maps.InfoWindow({
                             content: props.content
@@ -133,9 +151,7 @@
                 }
             }
 
-
         </script>
-
 
         <script async defer 
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4HjeXhplfNZb1oPX3HlrQkFz2FuCzoAs&callback=initMap">
