@@ -5,6 +5,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <style>
             #map {
                 height:600px;
@@ -72,6 +73,14 @@
                             <div id="map"></div>
                         </div>
                     </div>
+                </div>
+                <div class="col-2 text-center y">
+                    <h4 class="text-light">Nearby Attractions</h4>
+                    <ul class="list-unstyled text-light">
+                        {% for rest in nearby %}
+                        <li>{{rest}}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
@@ -221,11 +230,19 @@
                         map: map,
                         icon: "{% static 'parks/img/firework.png' %}",
                         animation: google.maps.Animation.DROP,
-                        // content: props.content
                     });
                     marker.addListener('click', togglefirework);
                     function togglefirework() { 
                         marker.setIcon('{% static "parks/img/fireworkasdafas.gif" %}');
+                    }
+                    marker.addListener('click', shownearby);
+                    function shownearby() {
+                        lat = props.coords.lat
+                        long = props.coords.lng
+                        window.location = 'http://localhost:8000/parks/apis/' + lat + '/' + long
+                        $.getJSON(window.location, function(data, textStatus, jqXHR){
+                            console.log(data)
+                        });
                     }
                     if(props.content){
                         var infowindow = new google.maps.InfoWindow({

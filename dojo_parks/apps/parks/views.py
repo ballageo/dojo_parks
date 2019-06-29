@@ -1,8 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponseRedirect
 from apps.parks.models import *
 import requests
+from django.http import JsonResponse
+import json
 from django.contrib import messages
 from random import randint
+
 
 # Create your views here.
 
@@ -165,12 +168,21 @@ def removePark(request, parkid):
         return redirect('/')
 
 def darkmode(request):
+    if "res1" not in request.session:
+        request.session['res1'] = "Sorry no restaurants nearby"
+        request.session['res2'] = ""
+        request.session['res3'] = ""
+    x = [request.session['res1'], request.session['res2'], request.session['res3']]
     context = {
+        'nearby': x,
         "user" : User.objects.get(id=request.session["user_id"]),
         "all_parks": Park.objects.all(),
         "sidebar_parks": Park.objects.all().order_by("-id")[:10],
         "last_park": Park.objects.last(),
     }
+    del(request.session['res1'])
+    del(request.session['res2'])
+    del(request.session['res3'])
     return render(request, "parks/darkmap.html", context)
 
 
@@ -247,7 +259,7 @@ def createdark(request):
     if len(errors) > 0:
         for key, value in errors.items():
             messages.error(request, value, extra_tags = key)
-        return redirect("/")
+        return redirect("/parks/darkmode")
     else:
         # Google Maps API
         googlemapsapi = "https://maps.googleapis.com/maps/api/geocode/json"
@@ -321,3 +333,28 @@ def removeParkDark(request, parkid):
         return redirect('/parks/darkmode')
     else:
         return redirect('/parks/darkmode')
+    
+
+
+def apis(request, lat, long):
+    nearby = f"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={lat},{long}&radius=15000&type=restaurant&key=AIzaSyDcuEo_YNfM-UN8VWL9IeXtfJHR30R4I_0"
+    req = requests.get(nearby)
+    res = req.json()
+    print(res)
+
+    try:
+        request.session['res1'] = res['results'][0]['name']
+    except:
+        request.session['res1'] = "No restaurants nearby"
+    try:
+        request.session['res2'] = res['results'][1]['name']
+    except:
+        request.session['res2'] = ""
+    try:
+        request.session['res3'] = res['results'][2]['name']
+    except:
+        request.session['res3'] = ""
+
+    return redirect("/parks/darkmode")
+    
+    

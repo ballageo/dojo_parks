@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^createdark$', views.createdark),
     url(r'^remove/(?P<parkid>\d+)$', views.removePark),
     url(r'^remove/dark/(?P<parkid>\d+)$', views.removeParkDark),
+    url(r'^apis/(?P<lat>-?[0-9]\d*(\.\d+)?)/(?P<long>-?[0-9]\d*(\.\d+)?)$', views.apis),
     url(r'^$', views.index),
     ]
